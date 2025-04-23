@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 30
+    },
+    "auditLog": "/Users/sudhakarswain/bookservicenextdoor/bookservicenextdoor-backend/logs/.e6e489bd76940f361e59c71a521eadd537465ee1-audit.json",
+    "files": [
+        {
+            "date": 1744473358226,
+            "name": "/Users/sudhakarswain/bookservicenextdoor/bookservicenextdoor-backend/logs/app-2025-04-12.log",
+            "hash": "0574bc21e8195486990c91a0fecfa7fc3f3bdea8de327c3502de682931921c30"
+        }
+    ],
+    "hashType": "sha256"
+}
