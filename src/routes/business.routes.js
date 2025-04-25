@@ -24,7 +24,7 @@ router.post("/login", loginBusiness);
 
 // Protected Routes (after login, JWT token required)
 router.post("/complete-profile", protectBusiness, completeBusinessProfile);
-router.get("/my-profile", protectBusiness, getBusinessProfile);
+router.get("/profile", protectBusiness, getBusinessProfile);
 router.put("/update-profile", protectBusiness, updateBusinessProfile);
 
 // Services Management

@@ -9,6 +9,11 @@ import businessRoutes from "./routes/business.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
 import bookingRoutes from "./routes/booking.routes.js"
 import authRoutes from "./routes/auth.routes.js";
+import serviceRoutes from './routes/service.routes.js';
+import publicRoutes from "./routes/public.routes.js";
+
+
+
 
 dotenv.config();
 
@@ -54,6 +59,8 @@ app.use("/api/v1/business", businessRoutes);
 app.use("/api/v1/contact", contactRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/services", serviceRoutes);
+app.use("/api/v1/public", publicRoutes);
 
 // (Optional) Global Error Handler
 // app.use(globalErrorHandler);

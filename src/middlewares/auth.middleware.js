@@ -10,7 +10,7 @@ export const protectBusiness = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      if (decoded.type !== "business") {
+      if (decoded.role !== "business") {
         return res.status(403).json({ success: false, message: "Access denied. Business token required." });
       }
 
@@ -37,7 +37,7 @@ export const protectUser = async (req, res, next) => {
       token = req.headers.authorization.split(" ")[1];
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-      if (decoded.type !== "user") {
+      if (decoded.role !== "user") {
         return res.status(403).json({ success: false, message: "Access denied. User token required." });
       }
 
