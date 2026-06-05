@@ -3,14 +3,18 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
+import passport from "passport";
 
 // Routes
 import businessRoutes from "./routes/business.routes.js";
 import contactRoutes from "./routes/contact.routes.js";
-import bookingRoutes from "./routes/booking.routes.js"
+import bookingRoutes from "./routes/booking.routes.js";
 import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
 import serviceRoutes from './routes/service.routes.js';
 import publicRoutes from "./routes/public.routes.js";
+
+import "./config/passport.config.js";
 
 
 
@@ -34,6 +38,9 @@ app.use(cors({
 app.use(helmet({
   crossOriginResourcePolicy: false
 }));
+
+// ✅ Passport init for social login support
+app.use(passport.initialize());
 
 // ✅ Rate Limiter: 200 requests per 15 minutes per IP
 const limiter = rateLimit({
@@ -59,6 +66,7 @@ app.use("/api/v1/business", businessRoutes);
 app.use("/api/v1/contact", contactRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/services", serviceRoutes);
 app.use("/api/v1/public", publicRoutes);
 

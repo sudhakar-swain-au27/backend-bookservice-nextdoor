@@ -8,7 +8,7 @@ const businessSchema = new mongoose.Schema(
     slug: { type: String, unique: true },
     ownerName: { type: String, default: "", trim: true },
     email: { type: String, required: true, unique: true, lowercase: true, trim: true },
-    phone: { type: String, unique: true, sparse: true, default: "", trim: true },
+    phone: { type: String, trim: true },
     password: { type: String, required: true },
 
     category: { type: String, default: "", trim: true },
@@ -69,6 +69,22 @@ businessSchema.pre("save", async function (next) {
 businessSchema.methods.matchPassword = async function (enteredPassword) {
   return bcrypt.compare(enteredPassword, this.password);
 };
+
+businessSchema.pre("save", function (next) {
+  if (this.phone === "") {
+    this.phone = undefined;
+  }
+  next();
+});
+
+businessSchema.index(
+  { phone: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { phone: { $exists: true, $ne: "" } },
+  }
+);
+
 // Auto-generate slug from businessName before saving
 businessSchema.pre("save", function (next) {
   if (!this.slug && this.businessName) {
@@ -76,7 +92,6 @@ businessSchema.pre("save", function (next) {
   }
   next();
 });
-
 
 const Business = mongoose.model("Business", businessSchema);
 export default Business;

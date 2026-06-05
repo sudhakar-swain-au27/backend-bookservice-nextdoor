@@ -8,15 +8,21 @@ import {
   updateBookingStatus,
   deleteBooking,
 } from '../controllers/booking.controller.js';
+import { protectUser, protectBusiness } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.post('/', createBooking);
+// Public Routes (if needed)
 router.get('/', getAllBookings);
 router.get('/:id', getBookingById);
-router.get('/user/:userId', getBookingsByUser);
-router.get('/business/:businessId', getBookingsByBusiness);
-router.put('/:id', updateBookingStatus);
-router.delete('/:id', deleteBooking);
+
+// Protected User Routes
+router.post('/', protectUser, createBooking);
+router.get('/user/:userId', protectUser, getBookingsByUser);
+
+// Protected Business Routes
+router.get('/business/:businessId', protectBusiness, getBookingsByBusiness);
+router.put('/:id', protectBusiness, updateBookingStatus);
+router.delete('/:id', protectBusiness, deleteBooking);
 
 export default router;
