@@ -1,4 +1,6 @@
 import express from "express";
+import multer from "multer";
+import path from "path";
 import {
   registerBusiness,
   loginBusiness,
@@ -14,16 +16,38 @@ import {
   deleteOffer,
 } from "../controllers/business.controller.js";
 
-import  {protectBusiness}  from "../middlewares/auth.middleware.js";
+import { registerBusinessValidator } from "../middlewares/validate.business.js";
+import { protectBusiness } from "../middlewares/auth.middleware.js";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, path.join(process.cwd(), "uploads", "business"));
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    cb(null, `${uniqueSuffix}-${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
 
 const router = express.Router();
 
 // Public Routes (no auth)
-router.post("/register", registerBusiness);
+router.post("/register", registerBusinessValidator, registerBusiness);
 router.post("/login", loginBusiness);
 
 // Protected Routes (after login, JWT token required)
-router.post("/complete-profile", protectBusiness, completeBusinessProfile);
+router.post(
+  "/complete-profile",
+  protectBusiness,
+  upload.fields([
+    { name: "logo", maxCount: 1 },
+    { name: "banner", maxCount: 1 },
+    { name: "gallery", maxCount: 10 },
+  ]),
+  completeBusinessProfile
+);
 router.get("/profile", protectBusiness, getBusinessProfile);
 router.put("/update-profile", protectBusiness, updateBusinessProfile);
 

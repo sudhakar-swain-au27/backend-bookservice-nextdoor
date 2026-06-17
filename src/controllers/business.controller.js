@@ -14,7 +14,10 @@ const formatBusinessResponse = (business) => ({
   businessName: business.businessName,
   email: business.email,
   slug: business.slug,
-  logo: business.logo
+  logo: business.logo,
+  isProfileComplete: business.isProfileComplete,
+  ownerName: business.ownerName || "",
+  phone: business.phone || "",
 });
 
 /** ================== BUSINESS AUTH ================== */
@@ -66,23 +69,50 @@ export const loginBusiness = async (req, res) => {
 
 /** ================== BUSINESS PROFILE ================== */
 
+const parseJsonField = (value) => {
+  if (typeof value === "string") {
+    try {
+      return JSON.parse(value);
+    } catch {
+      return value;
+    }
+  }
+  return value;
+};
+
 export const completeBusinessProfile = async (req, res) => {
   try {
-    const updates = req.body;
+    const updates = { ...req.body };
+
+    if (req.files) {
+      if (req.files.logo && req.files.logo[0]) {
+        updates.logo = `/uploads/business/${req.files.logo[0].filename}`;
+      }
+      if (req.files.banner && req.files.banner[0]) {
+        updates.banner = `/uploads/business/${req.files.banner[0].filename}`;
+      }
+      if (req.files.gallery && req.files.gallery.length) {
+        updates.gallery = req.files.gallery.map((file) => `/uploads/business/${file.filename}`);
+      }
+    }
+
     const business = await Business.findById(req.business.id);
 
     if (!business) return res.status(404).json({ success: false, message: "Business not found" });
 
     Object.assign(business, {
       ...updates,
-      services: typeof updates.services === "string" ? JSON.parse(updates.services) : updates.services,
-      offers: typeof updates.offers === "string" ? JSON.parse(updates.offers) : updates.offers,
-      professionals: typeof updates.professionals === "string" ? JSON.parse(updates.professionals) : updates.professionals,
-      isProfileComplete: true
+      services: parseJsonField(updates.services),
+      offers: parseJsonField(updates.offers),
+      professionals: parseJsonField(updates.professionals),
+      isProfileComplete: true,
     });
 
     await business.save();
-    return res.status(200).json({ success: true, message: "Profile updated", business });
+    const businessResponse = business.toObject();
+    delete businessResponse.password;
+
+    return res.status(200).json({ success: true, message: "Profile updated", business: businessResponse });
   } catch (error) {
     console.error("Profile Error:", error);
     return res.status(500).json({ success: false, message: "Internal Server Error" });

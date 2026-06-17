@@ -4,6 +4,8 @@ import helmet from "helmet";
 import cors from "cors";
 import rateLimit from "express-rate-limit";
 import passport from "passport";
+import fs from "fs";
+import path from "path";
 
 // Routes
 import businessRoutes from "./routes/business.routes.js";
@@ -45,6 +47,12 @@ app.use(helmet({
 // ✅ Passport init for social login support
 app.use(passport.initialize());
 
+// ✅ Ensure uploads directory exists
+const uploadsDir = path.join(process.cwd(), "uploads", "business");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
 // ✅ Rate Limiter: 200 requests per 15 minutes per IP
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -53,6 +61,9 @@ const limiter = rateLimit({
   legacyHeaders: false,
 });
 app.use(limiter);
+
+// ✅ Static uploads
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
 
 // ✅ Health Check Route
 app.get("/api/v1/health", (req, res) => {
