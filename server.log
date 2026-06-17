@@ -1,0 +1,17 @@
+
+> bookservicenextdoor-backend@1.0.0 start
+> nodemon server.js
+
+[33m[nodemon] 3.1.9[39m
+[33m[nodemon] to restart at any time, enter `rs`[39m
+[33m[nodemon] watching path(s): *.*[39m
+[33m[nodemon] watching extensions: js,mjs,cjs,json[39m
+[32m[nodemon] starting `node server.js`[39m
+Google OAuth is disabled because GOOGLE_CLIENT_ID / GOOGLE_CLIENT_SECRET are not set.
+Facebook OAuth is disabled because FACEBOOK_APP_ID / FACEBOOK_APP_SECRET are not set.
+(node:53298) [MONGOOSE] Warning: Duplicate schema index on {"email":1} found. This is often due to declaring an index using both "index: true" and "schema.index()". Please remove the duplicate index definition.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:53298) [MONGODB DRIVER] Warning: useNewUrlParser is a deprecated option: useNewUrlParser has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+(node:53298) [MONGODB DRIVER] Warning: useUnifiedTopology is a deprecated option: useUnifiedTopology has no effect since Node.js Driver version 4.0.0 and will be removed in the next major version
+🚀 Server running on http://localhost:5050
+✅ MongoDB Connected: sudhakarmern-shard-00-00.m7qwh.mongodb.net

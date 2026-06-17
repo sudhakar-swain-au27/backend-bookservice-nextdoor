@@ -13,6 +13,9 @@ import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import serviceRoutes from './routes/service.routes.js';
 import publicRoutes from "./routes/public.routes.js";
+import slotsRoutes from './routes/slots.routes.js';
+import availabilityRoutes from './routes/availability.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
 
 import "./config/passport.config.js";
 
@@ -69,6 +72,10 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/users", userRoutes);
 app.use("/api/v1/services", serviceRoutes);
 app.use("/api/v1/public", publicRoutes);
+app.use("/api/v1/slots", slotsRoutes);
+app.use('/api/v1/availability', availabilityRoutes);
+app.use('/api/v1/payments', paymentRoutes);
+
 
 // (Optional) Global Error Handler
 // app.use(globalErrorHandler);

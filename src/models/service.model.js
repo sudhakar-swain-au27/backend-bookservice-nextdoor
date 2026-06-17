@@ -20,6 +20,12 @@ const serviceSchema = new mongoose.Schema(
       type: Number,
       required: [true, "Service price is required"],
     },
+    // Duration in minutes for the service (used for slot generation)
+    duration: {
+      type: Number,
+      required: false,
+      default: 30,
+    },
     offer: {
       type: String,
       default: "", // For example: "10% OFF"
